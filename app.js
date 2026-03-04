@@ -446,15 +446,36 @@ function showPrintView() {
     } else {
         outcomesHtml = state.outcomes.map(outcome => {
             const linkedOutputs = state.outputs.filter(o => o.outcomeId === outcome.id);
+            const artifacts = linkedOutputs.filter(o => o.outputType === 'artifact');
+            const impacts = linkedOutputs.filter(o => o.outputType === 'impact');
+            const unclassified = linkedOutputs.filter(o => !o.outputType);
             return `
                 <div class="print-outcome">
                     <div class="print-outcome-header">
                         <strong>${escapeHtml(outcome.name)}</strong>
                         ${outcome.value ? `<span class="print-value">${escapeHtml(outcome.value)}</span>` : ''}
                     </div>
-                    ${linkedOutputs.length > 0 ? `
+                    ${artifacts.length > 0 ? `
+                        <ul class="print-outputs-list print-artifacts">
+                            ${artifacts.map(output => `
+                                <li class="print-artifact">
+                                    ${escapeHtml(output.name)}${output.cost ? ` <span class="print-cost">(${escapeHtml(output.cost)})</span>` : ''}
+                                </li>
+                            `).join('')}
+                        </ul>
+                    ` : ''}
+                    ${impacts.length > 0 ? `
+                        <ul class="print-outputs-list print-impacts">
+                            ${impacts.map(output => `
+                                <li class="print-impact">
+                                    ${escapeHtml(output.name)}${output.cost ? ` <span class="print-cost">(${escapeHtml(output.cost)})</span>` : ''}
+                                </li>
+                            `).join('')}
+                        </ul>
+                    ` : ''}
+                    ${unclassified.length > 0 ? `
                         <ul class="print-outputs-list">
-                            ${linkedOutputs.map(output => `
+                            ${unclassified.map(output => `
                                 <li>
                                     ${escapeHtml(output.name)}${output.cost ? ` <span class="print-cost">(${escapeHtml(output.cost)})</span>` : ''}
                                 </li>

@@ -527,6 +527,25 @@ main {
     border-left: 2px solid #4ade80;
 }
 
+/* Print view artifact and impact colors */
+.print-artifact {
+    color: #a78bfa;
+}
+
+.print-impact {
+    color: #4ade80;
+}
+
+.print-artifacts {
+    border-left: 2px solid #a78bfa;
+    padding-left: 1rem;
+}
+
+.print-impacts {
+    border-left: 2px solid #4ade80;
+    padding-left: 1rem;
+}
+
 .item-card.output .item-header {
     display: flex;
     align-items: center;
