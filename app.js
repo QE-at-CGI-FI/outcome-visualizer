@@ -5,6 +5,7 @@ const STORAGE_KEY = 'outcomeVisualizerData';
 
 // State
 let state = {
+    projectName: '',
     outcomes: [],
     outputs: []
 };
@@ -20,9 +21,13 @@ function loadData() {
     if (stored) {
         try {
             state = JSON.parse(stored);
+            // Ensure projectName exists for backwards compatibility
+            if (!state.projectName) {
+                state.projectName = '';
+            }
         } catch (e) {
             console.error('Error loading data:', e);
-            state = { outcomes: [], outputs: [] };
+            state = { projectName: '', outcomes: [], outputs: [] };
         }
     }
 }
@@ -235,6 +240,12 @@ function render() {
     renderOutputs();
     updateOutcomeDropdown();
     renderVisualization();
+    
+    // Sync project name field
+    const projectNameInput = document.getElementById('projectName');
+    if (projectNameInput && state.projectName !== undefined) {
+        projectNameInput.value = state.projectName;
+    }
 }
 
 // Add outcome
@@ -407,6 +418,10 @@ function importData(file) {
             
             if (!confirm('This will replace all current data. Continue?')) return;
             
+            // Ensure projectName exists for backwards compatibility
+            if (!imported.projectName) {
+                imported.projectName = '';
+            }
             state = imported;
             saveData();
             render();
@@ -422,7 +437,7 @@ function importData(file) {
 function clearAllData() {
     if (!confirm('Are you sure you want to delete ALL data? This cannot be undone.')) return;
     
-    state = { outcomes: [], outputs: [] };
+    state = { projectName: '', outcomes: [], outputs: [] };
     saveData();
     render();
 }
@@ -533,6 +548,12 @@ function showPrintView() {
 document.addEventListener('DOMContentLoaded', () => {
     loadData();
     render();
+    
+    // Project name input
+    document.getElementById('projectName').oninput = (e) => {
+        state.projectName = e.target.value;
+        saveData();
+    };
     
     // Outcome form
     document.getElementById('outcomeForm').onsubmit = (e) => {

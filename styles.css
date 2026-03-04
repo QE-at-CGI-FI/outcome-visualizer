@@ -30,6 +30,33 @@ header h1 {
     font-size: 1rem;
 }
 
+.project-name-container {
+    margin-top: 1rem;
+}
+
+.project-name-container input {
+    padding: 0.75rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.3);
+    color: #e0e0e0;
+    font-size: 1.1rem;
+    font-family: inherit;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.project-name-container input:focus {
+    outline: none;
+    border-color: #00d9ff;
+    box-shadow: 0 0 0 3px rgba(0, 217, 255, 0.2);
+}
+
+.project-name-container input::placeholder {
+    color: #888;
+}
+
 main {
     max-width: 1400px;
     margin: 0 auto;
