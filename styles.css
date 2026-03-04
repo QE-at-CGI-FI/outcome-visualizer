@@ -358,3 +358,104 @@ main {
     justify-content: flex-end;
     margin-top: 1.5rem;
 }
+
+/* Print View styles */
+.print-modal {
+    max-width: 700px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.print-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.print-header h3 {
+    margin: 0;
+}
+
+.print-content {
+    overflow-y: auto;
+    flex: 1;
+}
+
+.print-section {
+    margin-bottom: 1.5rem;
+}
+
+.print-section h4 {
+    color: #00d9ff;
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(0, 217, 255, 0.3);
+}
+
+.print-outcome {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.75rem;
+    border-left: 3px solid #00d9ff;
+}
+
+.print-outcome-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.print-outcome-header strong {
+    color: #fff;
+}
+
+.print-value {
+    font-size: 0.8rem;
+    background: rgba(0, 217, 255, 0.2);
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    color: #00d9ff;
+}
+
+.print-outputs-list {
+    list-style: none;
+    margin: 0.5rem 0 0 1rem;
+    padding: 0;
+}
+
+.print-outputs-list li {
+    padding: 0.25rem 0;
+    color: #ff9f43;
+    font-size: 0.9rem;
+}
+
+.print-outputs-list li::before {
+    content: "→ ";
+    color: #666;
+}
+
+.print-cost {
+    color: #888;
+    font-size: 0.85rem;
+}
+
+.print-empty {
+    color: #666;
+    font-style: italic;
+}
+
+.print-footer {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+    color: #888;
+    font-size: 0.85rem;
+}

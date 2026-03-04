@@ -356,6 +356,79 @@ function escapeHtml(text) {
     return div.innerHTML;
 }
 
+// Show print view (concise on-screen summary)
+function showPrintView() {
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay print-view-overlay';
+    
+    let outcomesHtml = '';
+    if (state.outcomes.length === 0) {
+        outcomesHtml = '<p class="print-empty">No outcomes defined.</p>';
+    } else {
+        outcomesHtml = state.outcomes.map(outcome => {
+            const linkedOutputs = state.outputs.filter(o => o.outcomeId === outcome.id);
+            return `
+                <div class="print-outcome">
+                    <div class="print-outcome-header">
+                        <strong>${escapeHtml(outcome.name)}</strong>
+                        ${outcome.value ? `<span class="print-value">${escapeHtml(outcome.value)}</span>` : ''}
+                    </div>
+                    ${linkedOutputs.length > 0 ? `
+                        <ul class="print-outputs-list">
+                            ${linkedOutputs.map(output => `
+                                <li>
+                                    ${escapeHtml(output.name)}${output.cost ? ` <span class="print-cost">(${escapeHtml(output.cost)})</span>` : ''}
+                                </li>
+                            `).join('')}
+                        </ul>
+                    ` : ''}
+                </div>
+            `;
+        }).join('');
+    }
+    
+    const unlinkedOutputs = state.outputs.filter(o => !o.outcomeId);
+    let unlinkedHtml = '';
+    if (unlinkedOutputs.length > 0) {
+        unlinkedHtml = `
+            <div class="print-section">
+                <h4>Unlinked Outputs</h4>
+                <ul class="print-outputs-list">
+                    ${unlinkedOutputs.map(output => `
+                        <li>
+                            ${escapeHtml(output.name)}${output.cost ? ` <span class="print-cost">(${escapeHtml(output.cost)})</span>` : ''}
+                        </li>
+                    `).join('')}
+                </ul>
+            </div>
+        `;
+    }
+    
+    overlay.innerHTML = `
+        <div class="modal print-modal">
+            <div class="print-header">
+                <h3>Outcomes & Outputs Summary</h3>
+                <button class="btn btn-secondary btn-small" id="closePrintView">Close</button>
+            </div>
+            <div class="print-content">
+                <div class="print-section">
+                    <h4>Outcomes (${state.outcomes.length})</h4>
+                    ${outcomesHtml}
+                </div>
+                ${unlinkedHtml}
+            </div>
+            <div class="print-footer">
+                <span>${state.outcomes.length} outcome${state.outcomes.length !== 1 ? 's' : ''}, ${state.outputs.length} output${state.outputs.length !== 1 ? 's' : ''}</span>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(overlay);
+    
+    overlay.querySelector('#closePrintView').onclick = () => overlay.remove();
+    overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
+}
+
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
     loadData();
@@ -397,4 +470,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Clear button
     document.getElementById('clearBtn').onclick = clearAllData;
+    
+    // Print view button
+    document.getElementById('printBtn').onclick = showPrintView;
 });
