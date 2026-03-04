@@ -67,10 +67,12 @@ function renderOutputs() {
     
     container.innerHTML = state.outputs.map(output => {
         const linkedOutcome = state.outcomes.find(o => o.id === output.outcomeId);
+        const typeLabel = output.outputType === 'artifact' ? 'Artifact' : output.outputType === 'impact' ? 'Impact' : '';
         return `
-            <div class="item-card output" data-id="${output.id}">
+            <div class="item-card output ${output.outputType || ''}" data-id="${output.id}">
                 <div class="item-header">
                     <span class="item-name">${escapeHtml(output.name)}</span>
+                    ${typeLabel ? `<span class="output-type-badge ${output.outputType}">${typeLabel}</span>` : ''}
                     <div class="item-actions">
                         <button class="btn btn-secondary btn-small" onclick="editOutput('${output.id}')">Edit</button>
                         <button class="btn btn-danger btn-small" onclick="deleteOutput('${output.id}')">Delete</button>
@@ -116,6 +118,9 @@ function renderVisualization() {
     // Group outputs by outcome
     state.outcomes.forEach(outcome => {
         const linkedOutputs = state.outputs.filter(o => o.outcomeId === outcome.id);
+        const artifacts = linkedOutputs.filter(o => o.outputType === 'artifact');
+        const impacts = linkedOutputs.filter(o => o.outputType === 'impact');
+        const unclassified = linkedOutputs.filter(o => !o.outputType);
         
         html += `
             <div class="outcome-group">
@@ -124,13 +129,45 @@ function renderVisualization() {
                     ${outcome.value ? `<span class="outcome-group-value">${escapeHtml(outcome.value)}</span>` : ''}
                 </div>
                 ${linkedOutputs.length > 0 ? `
-                    <div class="linked-outputs">
-                        ${linkedOutputs.map(output => `
-                            <div class="linked-output-card">
-                                <div class="linked-output-name">${escapeHtml(output.name)}</div>
-                                ${output.cost ? `<div class="linked-output-cost">Cost: ${escapeHtml(output.cost)}</div>` : ''}
+                    <div class="linked-outputs-grouped">
+                        ${artifacts.length > 0 ? `
+                            <div class="output-type-section artifact">
+                                <div class="output-type-header">Artifacts</div>
+                                <div class="linked-outputs">
+                                    ${artifacts.map(output => `
+                                        <div class="linked-output-card artifact">
+                                            <div class="linked-output-name">${escapeHtml(output.name)}</div>
+                                            ${output.cost ? `<div class="linked-output-cost">Cost: ${escapeHtml(output.cost)}</div>` : ''}
+                                        </div>
+                                    `).join('')}
+                                </div>
                             </div>
-                        `).join('')}
+                        ` : ''}
+                        ${impacts.length > 0 ? `
+                            <div class="output-type-section impact">
+                                <div class="output-type-header">Impacts</div>
+                                <div class="linked-outputs">
+                                    ${impacts.map(output => `
+                                        <div class="linked-output-card impact">
+                                            <div class="linked-output-name">${escapeHtml(output.name)}</div>
+                                            ${output.cost ? `<div class="linked-output-cost">Cost: ${escapeHtml(output.cost)}</div>` : ''}
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        ` : ''}
+                        ${unclassified.length > 0 ? `
+                            <div class="output-type-section">
+                                <div class="linked-outputs">
+                                    ${unclassified.map(output => `
+                                        <div class="linked-output-card">
+                                            <div class="linked-output-name">${escapeHtml(output.name)}</div>
+                                            ${output.cost ? `<div class="linked-output-cost">Cost: ${escapeHtml(output.cost)}</div>` : ''}
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        ` : ''}
                     </div>
                 ` : '<div class="empty-state">No outputs linked to this outcome yet.</div>'}
             </div>
@@ -140,16 +177,50 @@ function renderVisualization() {
     // Show unlinked outputs
     const unlinkedOutputs = state.outputs.filter(o => !o.outcomeId);
     if (unlinkedOutputs.length > 0) {
+        const unlinkedArtifacts = unlinkedOutputs.filter(o => o.outputType === 'artifact');
+        const unlinkedImpacts = unlinkedOutputs.filter(o => o.outputType === 'impact');
+        const unlinkedUnclassified = unlinkedOutputs.filter(o => !o.outputType);
+        
         html += `
             <div class="unlinked-outputs">
                 <h3>Outputs not linked to any outcome</h3>
-                <div class="linked-outputs">
-                    ${unlinkedOutputs.map(output => `
-                        <div class="linked-output-card">
-                            <div class="linked-output-name">${escapeHtml(output.name)}</div>
-                            ${output.cost ? `<div class="linked-output-cost">Cost: ${escapeHtml(output.cost)}</div>` : ''}
+                <div class="linked-outputs-grouped">
+                    ${unlinkedArtifacts.length > 0 ? `
+                        <div class="output-type-section artifact">
+                            <div class="output-type-header">Artifacts</div>
+                            <div class="linked-outputs">
+                                ${unlinkedArtifacts.map(output => `
+                                    <div class="linked-output-card artifact">
+                                        <div class="linked-output-name">${escapeHtml(output.name)}</div>
+                                        ${output.cost ? `<div class="linked-output-cost">Cost: ${escapeHtml(output.cost)}</div>` : ''}
+                                    </div>
+                                `).join('')}
+                            </div>
                         </div>
-                    `).join('')}
+                    ` : ''}
+                    ${unlinkedImpacts.length > 0 ? `
+                        <div class="output-type-section impact">
+                            <div class="output-type-header">Impacts</div>
+                            <div class="linked-outputs">
+                                ${unlinkedImpacts.map(output => `
+                                    <div class="linked-output-card impact">
+                                        <div class="linked-output-name">${escapeHtml(output.name)}</div>
+                                        ${output.cost ? `<div class="linked-output-cost">Cost: ${escapeHtml(output.cost)}</div>` : ''}
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                    ${unlinkedUnclassified.length > 0 ? `
+                        <div class="linked-outputs">
+                            ${unlinkedUnclassified.map(output => `
+                                <div class="linked-output-card">
+                                    <div class="linked-output-name">${escapeHtml(output.name)}</div>
+                                    ${output.cost ? `<div class="linked-output-cost">Cost: ${escapeHtml(output.cost)}</div>` : ''}
+                                </div>
+                            `).join('')}
+                        </div>
+                    ` : ''}
                 </div>
             </div>
         `;
@@ -181,12 +252,13 @@ function addOutcome(name, value, description) {
 }
 
 // Add output
-function addOutput(name, cost, description, outcomeId) {
+function addOutput(name, cost, description, outputType, outcomeId) {
     const output = {
         id: generateId(),
         name: name.trim(),
         cost: cost.trim(),
         description: description.trim(),
+        outputType: outputType || null,
         outcomeId: outcomeId || null,
         createdAt: new Date().toISOString()
     };
@@ -242,6 +314,7 @@ function editOutput(id) {
         output.name = data.name.trim();
         output.cost = data.cost.trim();
         output.description = data.description.trim();
+        output.outputType = data.outputType || null;
         output.outcomeId = data.outcomeId || null;
         saveData();
         render();
@@ -263,6 +336,11 @@ function showEditModal(type, item, onSave) {
                 <input type="text" id="editMeta" value="${escapeHtml(isOutcome ? item.value : item.cost)}" placeholder="${isOutcome ? 'Value description' : 'Cost description'}">
                 <textarea id="editDescription" placeholder="Description">${escapeHtml(item.description)}</textarea>
                 ${!isOutcome ? `
+                    <select id="editOutputType" required>
+                        <option value="">Select type</option>
+                        <option value="artifact" ${item.outputType === 'artifact' ? 'selected' : ''}>Artifact (tangible deliverable)</option>
+                        <option value="impact" ${item.outputType === 'impact' ? 'selected' : ''}>Impact (measurable effect)</option>
+                    </select>
                     <select id="editOutcome">
                         <option value="">Link to outcome (optional)</option>
                         ${state.outcomes.map(o => 
@@ -293,6 +371,7 @@ function showEditModal(type, item, onSave) {
             data.value = document.getElementById('editMeta').value;
         } else {
             data.cost = document.getElementById('editMeta').value;
+            data.outputType = document.getElementById('editOutputType').value;
             data.outcomeId = document.getElementById('editOutcome').value;
         }
         onSave(data);
@@ -451,9 +530,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const name = document.getElementById('outputName').value;
         const cost = document.getElementById('outputCost').value;
         const description = document.getElementById('outputDescription').value;
+        const outputType = document.getElementById('outputType').value;
         const outcomeId = document.getElementById('outputOutcome').value;
         
-        addOutput(name, cost, description, outcomeId);
+        addOutput(name, cost, description, outputType, outcomeId);
         e.target.reset();
     };
     

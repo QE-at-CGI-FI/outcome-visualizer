@@ -92,7 +92,8 @@
       "cost": "Infrastructure: $2,500/month",
       "description": "Production-mirror environment for integration testing and UAT",
       "outcomeId": "outcome-env-001",
-      "category": "pre-production-environments"
+      "category": "pre-production-environments",
+      "outputType": "artifact"
     },
     {
       "id": "output-env-002",
@@ -100,7 +101,8 @@
       "cost": "Infrastructure: $800/month per sandbox",
       "description": "Isolated environments for feature development with synthetic data",
       "outcomeId": "outcome-env-002",
-      "category": "pre-production-environments"
+      "category": "pre-production-environments",
+      "outputType": "artifact"
     },
     {
       "id": "output-env-003",
@@ -108,7 +110,8 @@
       "cost": "Infrastructure: $4,000/month (scaled for load testing)",
       "description": "Environment sized for load, stress, and performance validation",
       "outcomeId": "outcome-env-003",
-      "category": "pre-production-environments"
+      "category": "pre-production-environments",
+      "outputType": "artifact"
     },
     {
       "id": "output-env-004",
@@ -116,7 +119,8 @@
       "cost": "Infrastructure: $0.50 per PR environment-hour",
       "description": "On-demand environments spun up for each pull request",
       "outcomeId": "outcome-env-002",
-      "category": "pre-production-environments"
+      "category": "pre-production-environments",
+      "outputType": "artifact"
     },
     {
       "id": "output-env-005",
@@ -124,7 +128,8 @@
       "cost": "Development: 3 sprints, Maintenance: 2 days/month",
       "description": "Automated pipeline to anonymize production data for pre-prod use",
       "outcomeId": "outcome-env-003",
-      "category": "pre-production-environments"
+      "category": "pre-production-environments",
+      "outputType": "artifact"
     },
     {
       "id": "output-pipeline-001",
@@ -132,7 +137,8 @@
       "cost": "Development: 4 sprints, CI minutes: $500/month",
       "description": "Automated build, test, and deployment pipeline with quality gates",
       "outcomeId": "outcome-pipeline-001",
-      "category": "pipelines"
+      "category": "pipelines",
+      "outputType": "artifact"
     },
     {
       "id": "output-pipeline-002",
@@ -140,7 +146,8 @@
       "cost": "Development: Ongoing (20% of feature work)",
       "description": "Unit, integration, and E2E tests executed on every commit",
       "outcomeId": "outcome-pipeline-002",
-      "category": "pipelines"
+      "category": "pipelines",
+      "outputType": "artifact"
     },
     {
       "id": "output-pipeline-003",
@@ -148,7 +155,8 @@
       "cost": "Tool licensing: $1,200/month, Integration: 1 sprint",
       "description": "SAST, DAST, and dependency scanning in pipeline",
       "outcomeId": "outcome-pipeline-002",
-      "category": "pipelines"
+      "category": "pipelines",
+      "outputType": "artifact"
     },
     {
       "id": "output-pipeline-004",
@@ -156,7 +164,8 @@
       "cost": "Tool licensing: $400/month, Integration: 2 sprints",
       "description": "Progressive rollout and instant rollback capability",
       "outcomeId": "outcome-pipeline-001",
-      "category": "pipelines"
+      "category": "pipelines",
+      "outputType": "artifact"
     },
     {
       "id": "output-pipeline-005",
@@ -164,7 +173,8 @@
       "cost": "Infrastructure: $300/month, Storage: $0.02/GB",
       "description": "Versioned storage for build artifacts and container images",
       "outcomeId": "outcome-pipeline-003",
-      "category": "pipelines"
+      "category": "pipelines",
+      "outputType": "artifact"
     },
     {
       "id": "output-pipeline-006",
@@ -172,7 +182,8 @@
       "cost": "Development: 6 sprints initial, Maintenance: 1 day/week",
       "description": "Terraform/Pulumi modules for consistent environment provisioning",
       "outcomeId": "outcome-pipeline-001",
-      "category": "pipelines"
+      "category": "pipelines",
+      "outputType": "artifact"
     },
     {
       "id": "output-data-001",
@@ -180,7 +191,8 @@
       "cost": "Infrastructure: $2,000/month, Ingestion: $0.50/GB",
       "description": "Aggregated logs with search, alerting, and retention policies",
       "outcomeId": "outcome-data-003",
-      "category": "data"
+      "category": "data",
+      "outputType": "artifact"
     },
     {
       "id": "output-data-002",
@@ -188,7 +200,8 @@
       "cost": "Tool licensing: $800/month, Instrumentation: 2 sprints",
       "description": "Request tracing across services with latency analysis",
       "outcomeId": "outcome-data-003",
-      "category": "data"
+      "category": "data",
+      "outputType": "artifact"
     },
     {
       "id": "output-data-003",
@@ -196,7 +209,8 @@
       "cost": "Tool licensing: $600/month, Setup: 1 sprint",
       "description": "Real-time metrics collection with customizable dashboards",
       "outcomeId": "outcome-data-001",
-      "category": "data"
+      "category": "data",
+      "outputType": "artifact"
     },
     {
       "id": "output-data-004",
@@ -204,7 +218,8 @@
       "cost": "Tool licensing: $400/month, Runbook development: Ongoing",
       "description": "Intelligent alerting with escalation policies and incident management",
       "outcomeId": "outcome-data-002",
-      "category": "data"
+      "category": "data",
+      "outputType": "artifact"
     },
     {
       "id": "output-data-005",
@@ -212,7 +227,8 @@
       "cost": "Development: 2 sprints, Data pipeline: $200/month",
       "description": "Deployment frequency, lead time, MTTR, and change failure rate tracking",
       "outcomeId": "outcome-data-001",
-      "category": "data"
+      "category": "data",
+      "outputType": "artifact"
     },
     {
       "id": "output-data-006",
@@ -220,7 +236,8 @@
       "cost": "Tool licensing: $300/month",
       "description": "Automated error grouping, assignment, and trend analysis",
       "outcomeId": "outcome-data-002",
-      "category": "data"
+      "category": "data",
+      "outputType": "artifact"
     },
     {
       "id": "output-practices-001",
@@ -228,7 +245,8 @@
       "cost": "Development: 1 sprint, Review overhead: 15% of dev time",
       "description": "Documented standards for PR reviews with automated checks",
       "outcomeId": "outcome-practices-002",
-      "category": "practices"
+      "category": "practices",
+      "outputType": "artifact"
     },
     {
       "id": "output-practices-002",
@@ -236,7 +254,8 @@
       "cost": "Writing: 10% of feature work, Platform: $50/month",
       "description": "Architecture decisions, runbooks, and API documentation",
       "outcomeId": "outcome-practices-002",
-      "category": "practices"
+      "category": "practices",
+      "outputType": "artifact"
     },
     {
       "id": "output-practices-003",
@@ -244,7 +263,8 @@
       "cost": "Time investment: 4 hours/week per developer",
       "description": "Regular pairing rotations for knowledge transfer and quality",
       "outcomeId": "outcome-practices-002",
-      "category": "practices"
+      "category": "practices",
+      "outputType": "impact"
     },
     {
       "id": "output-practices-004",
@@ -252,7 +272,8 @@
       "cost": "Time investment: 2 hours per sprint per team",
       "description": "Structured retrospectives with action item tracking",
       "outcomeId": "outcome-practices-003",
-      "category": "practices"
+      "category": "practices",
+      "outputType": "impact"
     },
     {
       "id": "output-practices-005",
@@ -260,7 +281,8 @@
       "cost": "Time investment: 4 hours per incident",
       "description": "Incident analysis focused on systemic improvements",
       "outcomeId": "outcome-practices-003",
-      "category": "practices"
+      "category": "practices",
+      "outputType": "impact"
     },
     {
       "id": "output-practices-006",
@@ -268,7 +290,8 @@
       "cost": "Tooling: $0 (issue tracker), Allocation: 20% of sprint capacity",
       "description": "Visible backlog of technical debt with prioritization",
       "outcomeId": "outcome-practices-001",
-      "category": "practices"
+      "category": "practices",
+      "outputType": "artifact"
     },
     {
       "id": "output-practices-007",
@@ -276,7 +299,8 @@
       "cost": "Compensation: $500/week, Training: 1 sprint per new member",
       "description": "Fair rotation with runbooks and escalation paths",
       "outcomeId": "outcome-practices-001",
-      "category": "practices"
+      "category": "practices",
+      "outputType": "impact"
     },
     {
       "id": "output-practices-008",
@@ -284,7 +308,8 @@
       "cost": "Tooling: $200/month, Time: 1 day per sprint",
       "description": "Regular failure injection to validate resilience",
       "outcomeId": "outcome-env-001",
-      "category": "practices"
+      "category": "practices",
+      "outputType": "impact"
     }
   ],
   "metadata": {
