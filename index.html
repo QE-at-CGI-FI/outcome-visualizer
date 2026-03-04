@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Outcome Visualizer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Outcome Visualizer</h1>
+        <p class="subtitle">Map outputs to outcomes. Outputs are what you deliver. Outcomes are what changes because of it.</p>
+    </header>
+
+    <main>
+        <div class="toolbar">
+            <button id="exportBtn" class="btn btn-secondary">Export JSON</button>
+            <label class="btn btn-secondary">
+                Import JSON
+                <input type="file" id="importFile" accept=".json" hidden>
+            </label>
+            <button id="clearBtn" class="btn btn-danger">Clear All</button>
+        </div>
+
+        <div class="panels">
+            <section class="panel outcomes-panel">
+                <div class="panel-header">
+                    <h2>Outcomes</h2>
+                    <p class="panel-description">What changes because of your work (includes value)</p>
+                </div>
+                <form id="outcomeForm" class="add-form">
+                    <input type="text" id="outcomeName" placeholder="Outcome name" required>
+                    <input type="text" id="outcomeValue" placeholder="Value description">
+                    <textarea id="outcomeDescription" placeholder="Description"></textarea>
+                    <button type="submit" class="btn btn-primary">Add Outcome</button>
+                </form>
+                <div id="outcomesList" class="items-list"></div>
+            </section>
+
+            <section class="panel outputs-panel">
+                <div class="panel-header">
+                    <h2>Outputs</h2>
+                    <p class="panel-description">What you deliver (includes cost)</p>
+                </div>
+                <form id="outputForm" class="add-form">
+                    <input type="text" id="outputName" placeholder="Output name" required>
+                    <input type="text" id="outputCost" placeholder="Cost description">
+                    <textarea id="outputDescription" placeholder="Description"></textarea>
+                    <select id="outputOutcome">
+                        <option value="">Link to outcome (optional)</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary">Add Output</button>
+                </form>
+                <div id="outputsList" class="items-list"></div>
+            </section>
+        </div>
+
+        <section class="visualization-section">
+            <h2>Outcome-Output Mapping</h2>
+            <div id="visualization" class="visualization"></div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
