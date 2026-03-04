@@ -15,15 +15,19 @@
         </div>
     </header>
 
-    <main>
+    <nav class="tabs">
+        <button class="tab-button active" data-tab="main">Main View</button>
+        <button class="tab-button" data-tab="summary">Summary View</button>
+    </nav>
+
+    <main id="mainView" class="tab-content active">
         <div class="toolbar">
-            <button id="printBtn" class="btn btn-secondary">Print View</button>
-            <button id="exportBtn" class="btn btn-secondary">Export JSON</button>
-            <label class="btn btn-secondary">
+            <button id="exportBtn" class="btn btn-secondary btn-small">Export JSON</button>
+            <label class="btn btn-secondary btn-small">
                 Import JSON
                 <input type="file" id="importFile" accept=".json" hidden>
             </label>
-            <button id="clearBtn" class="btn btn-danger">Clear All</button>
+            <button id="clearBtn" class="btn btn-danger btn-small">Clear All</button>
         </div>
 
         <div class="panels">
@@ -68,6 +72,18 @@
             <h2>Outcome-Output Mapping</h2>
             <div id="visualization" class="visualization"></div>
         </section>
+    </main>
+
+    <main id="summaryView" class="tab-content">
+        <div class="summary-container">
+            <div class="summary-header">
+                <h2>Outcomes & Outputs Summary</h2>
+            </div>
+            <div id="summaryContent" class="summary-content"></div>
+            <div class="summary-footer">
+                <span id="summaryStats"></span>
+            </div>
+        </div>
     </main>
 
     <script src="app.js"></script>

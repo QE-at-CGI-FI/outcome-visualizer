@@ -240,6 +240,7 @@ function render() {
     renderOutputs();
     updateOutcomeDropdown();
     renderVisualization();
+    renderSummaryView();
     
     // Sync project name field
     const projectNameInput = document.getElementById('projectName');
@@ -450,14 +451,14 @@ function escapeHtml(text) {
     return div.innerHTML;
 }
 
-// Show print view (concise on-screen summary)
-function showPrintView() {
-    const overlay = document.createElement('div');
-    overlay.className = 'modal-overlay print-view-overlay';
+// Render summary view (concise view)
+function renderSummaryView() {
+    const container = document.getElementById('summaryContent');
+    const statsContainer = document.getElementById('summaryStats');
     
     let outcomesHtml = '';
     if (state.outcomes.length === 0) {
-        outcomesHtml = '<p class="print-empty">No outcomes defined.</p>';
+        outcomesHtml = '<p class="summary-empty">No outcomes defined.</p>';
     } else {
         outcomesHtml = state.outcomes.map(outcome => {
             const linkedOutputs = state.outputs.filter(o => o.outcomeId === outcome.id);
@@ -465,34 +466,34 @@ function showPrintView() {
             const impacts = linkedOutputs.filter(o => o.outputType === 'impact');
             const unclassified = linkedOutputs.filter(o => !o.outputType);
             return `
-                <div class="print-outcome">
-                    <div class="print-outcome-header">
+                <div class="summary-outcome">
+                    <div class="summary-outcome-header">
                         <strong>${escapeHtml(outcome.name)}</strong>
-                        ${outcome.value ? `<span class="print-value">${escapeHtml(outcome.value)}</span>` : ''}
+                        ${outcome.value ? `<span class="summary-value">${escapeHtml(outcome.value)}</span>` : ''}
                     </div>
                     ${artifacts.length > 0 ? `
-                        <ul class="print-outputs-list print-artifacts">
+                        <ul class="summary-outputs-list summary-artifacts">
                             ${artifacts.map(output => `
-                                <li class="print-artifact">
-                                    ${escapeHtml(output.name)}${output.cost ? ` <span class="print-cost">(${escapeHtml(output.cost)})</span>` : ''}
+                                <li class="summary-artifact">
+                                    ${escapeHtml(output.name)}${output.cost ? ` <span class="summary-cost">(${escapeHtml(output.cost)})</span>` : ''}
                                 </li>
                             `).join('')}
                         </ul>
                     ` : ''}
                     ${impacts.length > 0 ? `
-                        <ul class="print-outputs-list print-impacts">
+                        <ul class="summary-outputs-list summary-impacts">
                             ${impacts.map(output => `
-                                <li class="print-impact">
-                                    ${escapeHtml(output.name)}${output.cost ? ` <span class="print-cost">(${escapeHtml(output.cost)})</span>` : ''}
+                                <li class="summary-impact">
+                                    ${escapeHtml(output.name)}${output.cost ? ` <span class="summary-cost">(${escapeHtml(output.cost)})</span>` : ''}
                                 </li>
                             `).join('')}
                         </ul>
                     ` : ''}
                     ${unclassified.length > 0 ? `
-                        <ul class="print-outputs-list">
+                        <ul class="summary-outputs-list">
                             ${unclassified.map(output => `
                                 <li>
-                                    ${escapeHtml(output.name)}${output.cost ? ` <span class="print-cost">(${escapeHtml(output.cost)})</span>` : ''}
+                                    ${escapeHtml(output.name)}${output.cost ? ` <span class="summary-cost">(${escapeHtml(output.cost)})</span>` : ''}
                                 </li>
                             `).join('')}
                         </ul>
@@ -506,12 +507,12 @@ function showPrintView() {
     let unlinkedHtml = '';
     if (unlinkedOutputs.length > 0) {
         unlinkedHtml = `
-            <div class="print-section">
+            <div class="summary-section">
                 <h4>Unlinked Outputs</h4>
-                <ul class="print-outputs-list">
+                <ul class="summary-outputs-list">
                     ${unlinkedOutputs.map(output => `
                         <li>
-                            ${escapeHtml(output.name)}${output.cost ? ` <span class="print-cost">(${escapeHtml(output.cost)})</span>` : ''}
+                            ${escapeHtml(output.name)}${output.cost ? ` <span class="summary-cost">(${escapeHtml(output.cost)})</span>` : ''}
                         </li>
                     `).join('')}
                 </ul>
@@ -519,29 +520,28 @@ function showPrintView() {
         `;
     }
     
-    overlay.innerHTML = `
-        <div class="modal print-modal">
-            <div class="print-header">
-                <h3>Outcomes & Outputs Summary</h3>
-                <button class="btn btn-secondary btn-small" id="closePrintView">Close</button>
-            </div>
-            <div class="print-content">
-                <div class="print-section">
-                    <h4>Outcomes (${state.outcomes.length})</h4>
-                    ${outcomesHtml}
-                </div>
-                ${unlinkedHtml}
-            </div>
-            <div class="print-footer">
-                <span>${state.outcomes.length} outcome${state.outcomes.length !== 1 ? 's' : ''}, ${state.outputs.length} output${state.outputs.length !== 1 ? 's' : ''}</span>
-            </div>
+    container.innerHTML = `
+        <div class="summary-section">
+            <h4>Outcomes (${state.outcomes.length})</h4>
+            ${outcomesHtml}
         </div>
+        ${unlinkedHtml}
     `;
     
-    document.body.appendChild(overlay);
+    statsContainer.textContent = `${state.outcomes.length} outcome${state.outcomes.length !== 1 ? 's' : ''}, ${state.outputs.length} output${state.outputs.length !== 1 ? 's' : ''}`;
+}
+
+// Switch between tabs
+function switchTab(tabName) {
+    // Update tab buttons
+    document.querySelectorAll('.tab-button').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.tab === tabName);
+    });
     
-    overlay.querySelector('#closePrintView').onclick = () => overlay.remove();
-    overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
+    // Update tab content
+    document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.toggle('active', content.id === tabName + 'View');
+    });
 }
 
 // Initialize
@@ -593,6 +593,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Clear button
     document.getElementById('clearBtn').onclick = clearAllData;
     
-    // Print view button
-    document.getElementById('printBtn').onclick = showPrintView;
+    // Tab switching
+    document.querySelectorAll('.tab-button').forEach(btn => {
+        btn.addEventListener('click', () => {
+            switchTab(btn.dataset.tab);
+        });
+    });
 });
